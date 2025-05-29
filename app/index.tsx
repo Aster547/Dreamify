@@ -6,7 +6,7 @@ export default function Index() {
 
   return (
     <ImageBackground
-      source={require('../assets/images/background.png')} // Use your local image here
+      source={require('../assets/images/background.png')} 
       style={{ flex: 1, width: '100%', height: '100%' }}
       resizeMode="cover"
     >
