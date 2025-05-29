@@ -14,7 +14,7 @@ export default function DreamDetail() {
     >
       <Header/>
 
-      <SafeAreaView className="flex-1 bg-transparent px-4 pt-6 items-center justify-center">
+      <SafeAreaView className="flex-1 bg-transparent px-4 pt-6 items-center mt-40">
         <View className="bg-white rounded-3xl p-6 w-4/5">
           <Text className="text-center text-xl font-bold text-[#5E418F] mb-4">{title}</Text>
 

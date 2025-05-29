@@ -8,7 +8,7 @@ export default function Header() {
     const router = useRouter();
 
     return (
-        <View className="w-full flex-row items-center justify-between pl-6 py-3 absolute">
+        <View className="w-full flex-row items-center justify-between pl-6 py-3">
             <TouchableOpacity onPress={() => router.back()} >
             <Ionicons name="arrow-back" size={32} color="white"/>
             </TouchableOpacity>
