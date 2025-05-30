@@ -9,6 +9,7 @@ import {
     StyleSheet,
     ActivityIndicator,
     Alert,
+    KeyboardAvoidingView
 } from 'react-native';
 
 export default function FloatingNoteButton({ onSave }: { onSave: (title: string, content: string, date: string, imageUrl?: string) => void }) {
@@ -105,10 +106,10 @@ export default function FloatingNoteButton({ onSave }: { onSave: (title: string,
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitle}>Add a Dream</Text>
-                        <TextInput
-                            placeholder="Title"
-                            value={title}
-                            onChangeText={setTitle}
+                            <TextInput
+                                placeholder="Title"
+                                value={title}
+                                onChangeText={setTitle}
                             style={styles.input}
                         />
                         <TextInput
@@ -147,9 +148,9 @@ export default function FloatingNoteButton({ onSave }: { onSave: (title: string,
 const styles = StyleSheet.create({
     modalOverlay: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         backgroundColor: 'rgba(0,0,0,0.4)',
-        padding: 20,
+        paddingTop: '40%',
     },
     modalContent: {
         backgroundColor: 'white',
