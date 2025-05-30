@@ -17,8 +17,13 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 import ImageView from 'react-native-image-viewing';
-import { MaterialIcons, Feather, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, Feather, AntDesign, FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// Add these imports at the top of your file
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
+
 
 const NOTES_KEY = 'NOTES_KEY';
 
@@ -47,6 +52,45 @@ export default function DreamDetail() {
     const day = date.getDate();
     const year = date.getFullYear().toString().slice(-2);
     return `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+  };
+
+  const handleDownload = async () => {
+    try {
+      // Request permissions (required for Android)
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission required', 'We need permission to save images to your device.');
+        return;
+      }
+  
+      // Get the image extension from the URL
+      const fileExtension = imageUri.split('.').pop() || 'jpg';
+      const fileName = `dream-${Date.now()}.${fileExtension}`;
+      
+      // Download the file
+      const downloadResumable = FileSystem.createDownloadResumable(
+        imageUri,
+        FileSystem.documentDirectory + fileName,
+        {}
+      );
+  
+      const result = await downloadResumable.downloadAsync();
+      
+      if (!result) {
+        throw new Error('Download failed - no result returned');
+      }
+  
+      const { uri: localUri } = result;
+      
+      // Save to gallery
+      const asset = await MediaLibrary.createAssetAsync(localUri);
+      await MediaLibrary.createAlbumAsync('Dreams', asset, false);
+      
+      Alert.alert('Success', 'Image saved to your gallery!');
+    } catch (error) {
+      console.error('Download error:', error);
+      Alert.alert('Error', 'Failed to download the image. Please try again.');
+    }
   };
 
   const handleDelete = async () => {
@@ -348,6 +392,13 @@ export default function DreamDetail() {
                 ) : (
                   <AntDesign name="retweet" size={24} color="#5E418F" />
                 )}
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                className="items-center justify-center bg-green-100 p-3 rounded-lg"
+                onPress={handleDownload}
+              >
+                <FontAwesome name="download" size={24} color="#10b981" />
               </TouchableOpacity>
             </View>
           </View>
